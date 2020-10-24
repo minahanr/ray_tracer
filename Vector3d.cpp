@@ -1,8 +1,8 @@
-include "Vector.h"
+#include "Vector3d.h"
 
-class Vector {
+class Vector3d {
     public:
-        Vector(double x, double y, double z) {
+        Vector3d(double x, double y, double z) {
             this->x = x;
             this->y = y;
             this->z = z;
@@ -12,4 +12,4 @@ class Vector {
         double x;
         double y;
         double z;
-}
+};

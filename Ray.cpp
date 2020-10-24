@@ -2,11 +2,11 @@
 
 class Ray {
     public:
-        Ray(Vector &origin, Vector &direction) {
+        Ray(Vector3d &origin, Vector3d &direction) {
             this->origin = &origin;
             this->direction = &direction;
         }
     private:
-        Vector* origin;
-        Vector* direction;
-}
+        Vector3d* origin;
+        Vector3d* direction;
+};

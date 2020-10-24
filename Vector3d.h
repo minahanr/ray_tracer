@@ -1,9 +1,9 @@
-class Vector {
+class Vector3d {
     public:
-        Vector(double x, double y, double z);
+        Vector3d(double x, double y, double z);
 
     private:
         double x;
         double y;
         double z;
-}
+};
