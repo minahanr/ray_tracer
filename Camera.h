@@ -6,4 +6,4 @@ class Camera {
 
     private:
         Vector3d* point;
-}
+};
