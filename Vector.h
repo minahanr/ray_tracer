@@ -7,4 +7,3 @@ class Vector {
         double y;
         double z;
 }
-
