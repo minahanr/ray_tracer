@@ -1,3 +1,5 @@
+include "Vector.h"
+
 class Vector {
     public:
         Vector(double x, double y, double z) {
