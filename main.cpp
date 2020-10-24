@@ -5,4 +5,7 @@
 #include "Hittable.h"
 
 int main() {
+    std::vector<Hittable> hittable_list;
+
+    
 }
