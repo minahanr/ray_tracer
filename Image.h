@@ -1,4 +1,7 @@
 #include "Vector3d.h"
+#include "Ray.h"
+
+#include<vector>
 
 class Image {
     public:
@@ -9,7 +12,7 @@ class Image {
         double getHeight() const;
         double getHorizontalRes() const;
         double getVerticalRes() const;
-        void iterate_on_rays();
+        std::vector<Ray> generate_rays_to_image();
     private:
         Vector3d* lower_left_corner;
         Vector3d* lower_right_corner;
