@@ -7,6 +7,9 @@ class Camera {
             this->point = &point;
         }
 
+        Vector3d* getPoint() const {
+            return this->point;
+        }
     private:
         Vector3d* point;
 };
