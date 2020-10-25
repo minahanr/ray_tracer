@@ -33,11 +33,14 @@ class Vector3d {
         Vector3d operator+(const Vector3d& vec) {
             return Vector3d(this->getX() + vec.getX(), this->getY() + vec.getY(), this->getZ() + vec.getZ());
         }
+        Vector3d operator-(Vector3d& vec) {
+            return *this + vec * -1;
+        }
         Vector3d operator*(double scalar) {
             return Vector3d(this->getX() * scalar, this->getY() * scalar, this->getZ() * scalar);
         }
 
-    private:
+    protected:
         double x;
         double y;
         double z;

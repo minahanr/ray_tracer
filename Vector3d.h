@@ -9,7 +9,8 @@ class Vector3d {
 
         Vector3d operator+(const Vector3d& vec);
         Vector3d operator*(double scalar);
-    private:
+        
+    protected:
         double x;
         double y;
         double z;
