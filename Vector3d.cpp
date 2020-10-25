@@ -1,5 +1,7 @@
 #include "Vector3d.h"
 
+#include <cmath>
+
 class Vector3d {
     public:
         Vector3d() {
@@ -24,11 +26,15 @@ class Vector3d {
             return this->z;
         }
 
+        double magnitude() const {
+            return std::pow(std::pow(this->getX(), 2) + std::pow(this->getY(), 2), 1/2);
+        }
+
         Vector3d operator+(const Vector3d& vec) {
-            return Vector3d(this->x + vec.getX(), this->y + vec.getY(), this->z + vec.getZ());
+            return Vector3d(this->getX() + vec.getX(), this->getY() + vec.getY(), this->getZ() + vec.getZ());
         }
         Vector3d operator*(double scalar) {
-            return Vector3d(this->x * scalar, this->y * scalar, this->z * scalar);
+            return Vector3d(this->getX() * scalar, this->getY() * scalar, this->getZ() * scalar);
         }
 
     private:
