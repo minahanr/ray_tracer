@@ -1,7 +1,6 @@
 class Hittable {
     public:
-        Hittable(&Point_set points);
+        Hittable();
 
     private:
-        Point_set* points;
 }
