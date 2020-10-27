@@ -15,7 +15,7 @@ Unit_vector::Unit_vector(double x, double y, double z) {
     this->z = vec.getZ() / magnitude;
 }
         
-Unit_vector::Unit_vector(Vector3d& vec) {
+Unit_vector::Unit_vector(Vector3d vec) {
     double magnitude = vec.magnitude();
     this->x = vec.getX() / magnitude;
     this->y = vec.getY() / magnitude;

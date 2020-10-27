@@ -28,7 +28,7 @@ double Vector3d::magnitude() {
     return std::pow(std::pow(this->getX(), 2) + std::pow(this->getY(), 2), 1/2);
 }
 
-Vector3d Vector3d::operator+(Vector3d& vec) {
+Vector3d Vector3d::operator+(Vector3d vec) {
     return Vector3d(this->getX() + vec.getX(), this->getY() + vec.getY(), this->getZ() + vec.getZ());
 }
 

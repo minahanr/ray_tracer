@@ -7,7 +7,7 @@
 
 class Sphere: public Hittable {
     public:
-        Sphere(Vector3d& center, double radius);
+        Sphere(Vector3d center, double radius);
         Vector3d* getCenter();
         double getRadius();
 

@@ -24,7 +24,7 @@ int main() {
     Camera camera(Vector3d());
     Image image(Vector3d(-2, -2, -1), Unit_vector(0, 1, 0), Unit_vector(1, 0, 0), 4., 2., 0.01, 0.01);
     std::vector<Hittable> surface_list;
-    std::list<Ray> ray_list = image.generate_rays_to_image();
+    std::list<Ray> ray_list = image.generate_rays_to_image(camera);
 
     std::cout << "P3\n" << image.getWidth() << ' ' << image.getHeight() << "\n255\n";
     surface_list.push_back(Sphere(Vector3d(0, 0, -1), 1));

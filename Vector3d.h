@@ -10,7 +10,7 @@ class Vector3d {
         double getZ();
         double magnitude();
 
-        Vector3d operator+(Vector3d& vec);
+        Vector3d operator+(Vector3d vec);
         Vector3d operator*(double scalar);
         
     protected:

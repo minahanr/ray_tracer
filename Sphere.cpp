@@ -6,7 +6,7 @@
 
 #include <cmath>
 
-Sphere::Sphere(Vector3d& center, double radius) {
+Sphere::Sphere(Vector3d center, double radius) {
     this->center = &center;
     this->radius = radius;
 }
