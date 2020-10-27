@@ -5,6 +5,7 @@
 #include "Camera.h"
 
 #include<vector>
+#include<list>
 
 class Image {
     public:
@@ -41,8 +42,8 @@ class Image {
             return this->vertical_res;
         }
 
-        std::vector<Ray> generate_rays_to_image(Camera &camera) {
-            std::vector<Ray> ray_list;
+        std::list<Ray> generate_rays_to_image(Camera &camera) {
+            std::list<Ray> ray_list;
             Vector3d imagePoint;
             for(int i = 0; i < this->getHeight(); i += this->getVerticalRes()) {
                 for (int j = 0; j < this->getWidth(); j += this->getHorizontalRes()) {
@@ -50,6 +51,8 @@ class Image {
                     ray_list.push_back(Ray(*(camera.getPoint()), Unit_vector(imagePoint + *(camera.getPoint()) * -1), imagePoint));
                 }
             }
+
+            return ray_list;
         }
     private:
         Vector3d* corner;

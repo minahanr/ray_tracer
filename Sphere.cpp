@@ -1,6 +1,7 @@
 #include "Hittable.h"
 #include "Vector3d.h"
 #include "Ray.h"
+#include "global_constants.h"
 
 #include <cmath>
 
@@ -25,7 +26,7 @@ class Sphere: public Hittable {
             if (std::pow(intersectionPoint.getX() - this->getCenter()->getX(), 2) + 
                 std::pow(intersectionPoint.getY() - this->getCenter()->getY(), 2) +
                 std::pow(intersectionPoint.getZ() - this->getCenter()->getZ(), 2)
-                == std::pow(this->getRadius(), 2)) {
+                - std::pow(this->getRadius(), 2) <= APPROX_EQUIV) {
                     
                 return &intersectionPoint;
                 }
