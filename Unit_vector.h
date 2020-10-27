@@ -1,3 +1,6 @@
+#ifndef UNIT_VECTOR_H
+#define UNIT_VECTOR_H
+
 #include "Vector3d.h"
 
 class Unit_vector: public Vector3d {
@@ -6,3 +9,5 @@ class Unit_vector: public Vector3d {
         Unit_vector(double x, double y, double z);
         Unit_vector(Vector3d &vec);
 };
+
+#endif

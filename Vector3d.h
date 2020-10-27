@@ -1,3 +1,6 @@
+#ifndef VECTOR3D_H
+#define VECTOR3D_H
+
 class Vector3d {
     public:
         Vector3d();
@@ -7,7 +10,7 @@ class Vector3d {
         double getZ();
         double magnitude();
 
-        Vector3d operator+(const Vector3d& vec);
+        Vector3d operator+(Vector3d& vec);
         Vector3d operator*(double scalar);
         
     protected:
@@ -15,3 +18,5 @@ class Vector3d {
         double y;
         double z;
 };
+
+#endif
