@@ -8,13 +8,13 @@
 class Sphere: public Hittable {
     public:
         Sphere(Vector3d center, double radius);
-        Vector3d* getCenter();
+        Vector3d getCenter();
         double getRadius();
 
-        Vector3d* intersects(Ray& ray, double time);
+        virtual Vector3d intersects(Ray& ray, double time);
 
     private:
-        Vector3d* center;
+        Vector3d center;
         double radius;
 };
 
