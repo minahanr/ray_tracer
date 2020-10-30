@@ -48,7 +48,7 @@ std::list<Ray> Image::generate_rays_to_image(Camera camera) {
     for(int i = 0; i < this->getHeight(); i += this->getVerticalRes()) {
         for (int j = 0; j < this->getWidth(); j += this->getHorizontalRes()) {
             imagePoint = this->getCorner() + vector_directions[0] * i + vector_directions[1] * j;
-            ray_list.push_back(Ray(*(camera.getPoint()), Unit_vector(imagePoint + *(camera.getPoint()) * -1), imagePoint));
+            ray_list.push_back(Ray(camera.getPoint(), Unit_vector(imagePoint + camera.getPoint() * -1), imagePoint));
         }
     }
     
