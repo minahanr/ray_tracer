@@ -1,6 +1,7 @@
 #include "Vector3d.h"
 
 #include <cmath>
+#include <iostream>
 
 Vector3d::Vector3d() {
     Vector3d(0, 0, 0);
@@ -25,7 +26,7 @@ double Vector3d::getZ() {
 }
 
 double Vector3d::magnitude() {
-    return std::pow((*this) * (*this), 1/2);
+    return std::pow((*this) * (*this), 0.5);
 }
 
 Vector3d Vector3d::operator+(Vector3d vec) {

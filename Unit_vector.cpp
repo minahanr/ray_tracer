@@ -1,6 +1,9 @@
 #include "Unit_vector.h"
 #include "Vector3d.h"
 
+#include <iostream>
+
+//unit vector not working
 Unit_vector::Unit_vector() {
     this->x = 1;
     this->y = 0;
