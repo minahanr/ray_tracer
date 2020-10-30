@@ -5,11 +5,11 @@
 
 class Camera {
     public:
-        Camera(Vector3d& point);
-        Vector3d* getPoint();
+        Camera(Vector3d point);
+        Vector3d getPoint();
 
     private:
-        Vector3d* point;
+        Vector3d point;
 };
 
 #endif
