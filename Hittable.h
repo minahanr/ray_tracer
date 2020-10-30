@@ -7,7 +7,7 @@
 class Hittable {
     public:
         Hittable();
-        Vector3d* intersects(Ray& ray, double time);
+        virtual Vector3d intersects(Ray& ray, double time);
     private:
 };
 
