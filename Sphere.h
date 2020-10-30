@@ -11,8 +11,6 @@ class Sphere: public Hittable {
         Vector3d getCenter();
         double getRadius();
 
-        virtual Vector3d intersects(Ray& ray, double time);
-
     private:
         Vector3d center;
         double radius;

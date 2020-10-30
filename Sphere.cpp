@@ -19,15 +19,3 @@ Vector3d Sphere::getCenter() {
 double Sphere::getRadius() {
     return this->radius;
 }
-
-Vector3d Sphere::intersects(Ray& ray, double time) {
-    Vector3d intersectionPoint = *(ray.getOrigin()) + *(ray.getDirection()) * time;
-    Vector3d dif = intersectionPoint - this->getCenter();
-    double distance = dif * dif;
-    double r_squared = std::pow(this->getRadius(), 2);
-    if (distance - r_squared <= APPROX_EQUIV && distance - r_squared >= -1 * APPROX_EQUIV) {
-        return intersectionPoint;
-    }
-
-    return *(ray.getOrigin());
-}
