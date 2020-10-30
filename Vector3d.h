@@ -11,7 +11,11 @@ class Vector3d {
         double magnitude();
 
         Vector3d operator+(Vector3d vec);
+        Vector3d operator-(Vector3d vec);
+        double operator*(Vector3d vec);
         Vector3d operator*(double scalar);
+        bool operator==(Vector3d vec);
+        bool operator!=(Vector3d vec);
         
     protected:
         double x;
