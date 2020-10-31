@@ -3,3 +3,4 @@ const double END_TIME = 20;
 const double DELTA_TIME = 0.01;
 const double APPROX_EQUIV = 0.01;
 const double RESOLUTION = 0.01;
+const int SAMPLES_PER_PIXEL = 100;
