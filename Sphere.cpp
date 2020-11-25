@@ -4,24 +4,45 @@
 #include "global_constants.h"
 #include "Sphere.h"
 #include "Material.h"
+#include "Unit_vector.h"
 
 #include <cmath>
 #include<iostream>
 
-Sphere::Sphere(Vector3d center, double radius, Material material) {
+Sphere::Sphere(Vector3d center, double radius, Material material) : Hittable(material) {
+    material.getType();
     this->center = center;
     this->radius = radius;
-    this->material = material;
 }
 
-Vector3d Sphere::getCenter() {
+Vector3d Sphere::getCenter() const {
     return this->center;
 }
 
-double Sphere::getRadius() {
+double Sphere::getRadius() const {
     return this->radius;
 }
 
-Material Sphere::getMaterial() {
-    return this->material;
+void Sphere::printData() const {
+    std::cout << this->center.getX() << ' ' << this->center.getY() << ' ' << this->center.getZ() << '\n';
+}
+
+double Sphere::intersects(Ray& ray) const {
+    double time;
+    Vector3d oc = ray.getOrigin() - this->getCenter();
+    double a = ray.getDirection() * ray.getDirection();
+    double b = ray.getDirection() * oc * 2;
+    double c = oc * oc - this->getRadius() * this->getRadius();
+
+    double discriminant = b * b - 4 * a * c;
+
+    if (discriminant > 0) {
+        return (-1 * b - std::pow(discriminant, 0.5)) / (2.0 * a);
+    }
+    
+    return -1;
+}
+
+Vector3d Sphere::calculateNormal(Vector3d intersectionPoint) const {
+    return Unit_vector(intersectionPoint - this->getCenter());
 }

@@ -1,10 +1,16 @@
+#include "Material.h"
 #include "Hittable.h"
 #include <iostream>
 
 Hittable::Hittable() {
-    int x = 1;
+
 }
 
-Vector3d Hittable::intersects(Ray& ray, double time) {
-    int x = 1;
+Hittable::Hittable(Material material) {
+    this->m_material = material;
 }
+
+Material Hittable::getMaterial() const {
+    return this->m_material;
+}
+

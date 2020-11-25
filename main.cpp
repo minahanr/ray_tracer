@@ -9,6 +9,7 @@
 #include "global_constants.h"
 
 #include<iostream>
+#include<memory>
 #include<vector>
 #include<list>
 #include<cmath>
@@ -47,31 +48,71 @@ Vector3d randInUnitSphere() {
     }
 }
 
-Vector3d intersects(Ray ray, std::vector<Sphere> surface_list, int depth) {
+// Vector3d intersects(Ray ray, std::vector<Sphere> surface_list, int depth) {
+
+//     if (depth <= 0) {
+//         return Vector3d(0, 0, 0);
+//     }
+
+//     std::vector<Sphere>::iterator surface_it = surface_list.begin();
+//     double a = ray.getDirection() * ray.getDirection();
+//     Vector3d oc; double time;
+//     Vector3d intersectionPoint;
+//     double min_time = -1; double b, c, t, discriminant;
+    
+//     std::vector<Sphere>::iterator earliest_surface_hit = surface_list.begin();
+//     for (surface_it = surface_list.begin(); surface_it != surface_list.end(); surface_it++) {
+//         oc = ray.getOrigin() - surface_it->getCenter();
+//         b = ray.getDirection() * oc * 2;
+//         c = oc * oc - surface_it->getRadius() * surface_it->getRadius();
+
+//         discriminant = b * b - 4 * a * c;
+//         if (discriminant > 0) {
+//             time = (-1 * b - std::pow(discriminant, 0.5)) / (2.0 * a);
+//             if ((min_time == -1 || time < min_time) && time > 0) {
+//                 min_time = time;
+//                 earliest_surface_hit = surface_it;
+//             }
+//         }
+//     }
+
+//     if (min_time == -1) {
+//         t = 0.5 * (ray.getDirection().getY() + 1.0);
+//         return Vector3d(1, 1, 1) * (1.0 - t) + Vector3d(0.5, 0.7, 1.0) * t;
+//     } else {
+//         if (earliest_surface_hit->getMaterial().getType() == 0) {
+//             intersectionPoint = ray.getOrigin() + ray.getDirection() * min_time;
+//             Vector3d normal = Unit_vector(intersectionPoint - earliest_surface_hit->getCenter());
+//             Vector3d target = intersectionPoint + normal + randInUnitSphere();
+//             Ray newRay = Ray(intersectionPoint, Unit_vector(target - intersectionPoint), ray.getImage_point());
+//             return intersects(newRay, surface_list, depth - 1) * 0.5;
+//         } else if (earliest_surface_hit->getMaterial().getType() == 1) {
+//             intersectionPoint = ray.getOrigin() + ray.getDirection() * min_time;
+//             Vector3d normal = Unit_vector(intersectionPoint - earliest_surface_hit->getCenter());
+//             Ray newRay = Ray(intersectionPoint, Unit_vector(ray.getDirection() + normal * 2), ray.getImage_point());
+//             return intersects(newRay, surface_list, depth - 1);
+//         }
+//     }
+// }
+
+Vector3d intersects(Ray ray, std::vector<std::shared_ptr<Hittable>> surface_list, int depth) {
 
     if (depth <= 0) {
         return Vector3d(0, 0, 0);
     }
 
-    std::vector<Sphere>::iterator surface_it = surface_list.begin();
-    double a = ray.getDirection() * ray.getDirection();
-    Vector3d oc; double time;
+    std::vector<std::shared_ptr<Hittable>>::iterator surface_it = surface_list.begin();
     Vector3d intersectionPoint;
-    double min_time = -1; double b, c, t, discriminant;
+    double min_time = -1; double b, c, t, discriminant, time;
     
-    std::vector<Sphere>::iterator earliest_surface_hit = surface_list.begin();
+    std::vector<std::shared_ptr<Hittable>>::iterator earliest_surface_hit = surface_list.begin();
     for (surface_it = surface_list.begin(); surface_it != surface_list.end(); surface_it++) {
-        oc = ray.getOrigin() - surface_it->getCenter();
-        b = ray.getDirection() * oc * 2;
-        c = oc * oc - surface_it->getRadius() * surface_it->getRadius();
-
-        discriminant = b * b - 4 * a * c;
-        if (discriminant > 0) {
-            time = (-1 * b - std::pow(discriminant, 0.5)) / (2.0 * a);
-            if ((min_time == -1 || time < min_time) && time > 0) {
-                min_time = time;
-                earliest_surface_hit = surface_it;
-            }
+        
+        time = (*surface_it)->intersects(ray);
+        
+        if ((min_time == -1 || time < min_time) && time > 0) {
+            min_time = time;
+            earliest_surface_hit = surface_it;
         }
     }
 
@@ -79,15 +120,15 @@ Vector3d intersects(Ray ray, std::vector<Sphere> surface_list, int depth) {
         t = 0.5 * (ray.getDirection().getY() + 1.0);
         return Vector3d(1, 1, 1) * (1.0 - t) + Vector3d(0.5, 0.7, 1.0) * t;
     } else {
-        if (earliest_surface_hit->getMaterial().getType() == 0) {
+        if ((*earliest_surface_hit)->getMaterial().getType() == 0) {
             intersectionPoint = ray.getOrigin() + ray.getDirection() * min_time;
-            Vector3d normal = Unit_vector(intersectionPoint - earliest_surface_hit->getCenter());
+            Vector3d normal = (*earliest_surface_hit)->calculateNormal(intersectionPoint);
             Vector3d target = intersectionPoint + normal + randInUnitSphere();
             Ray newRay = Ray(intersectionPoint, Unit_vector(target - intersectionPoint), ray.getImage_point());
             return intersects(newRay, surface_list, depth - 1) * 0.5;
-        } else if (earliest_surface_hit->getMaterial().getType() == 1) {
+        } else if ((*earliest_surface_hit)->getMaterial().getType() == 1) {
             intersectionPoint = ray.getOrigin() + ray.getDirection() * min_time;
-            Vector3d normal = Unit_vector(intersectionPoint - earliest_surface_hit->getCenter());
+            Vector3d normal = (*earliest_surface_hit)->calculateNormal(intersectionPoint);
             Ray newRay = Ray(intersectionPoint, Unit_vector(ray.getDirection() + normal * 2), ray.getImage_point());
             return intersects(newRay, surface_list, depth - 1);
         }
@@ -104,11 +145,11 @@ int main() {
     Material diffuse(0);
     Material metal(1);
 
-    std::vector<Sphere> surface_list;
-    surface_list.push_back(Sphere(Vector3d(0.0, 0.0, -1.0), 0.5, diffuse));
-    surface_list.push_back(Sphere(Vector3d(-1.0, 0.0, -1.0), 0.5, metal));
-    surface_list.push_back(Sphere(Vector3d(1.0, 0.0, -1.0), 0.5, metal));
-    surface_list.push_back(Sphere(Vector3d(0.0, -100.5, -1.0), 100.0, diffuse));
+    std::vector<std::shared_ptr<Hittable>> surface_list;
+    surface_list.push_back(std::make_shared<Sphere>(Vector3d(0.0, 0.0, -1.0), 0.5, diffuse));
+    surface_list.push_back(std::make_shared<Sphere>(Vector3d(-1.0, 0.0, -1.0), 0.5, metal));
+    surface_list.push_back(std::make_shared<Sphere>(Vector3d(1.0, 0.0, -1.0), 0.5, metal));
+    surface_list.push_back(std::make_shared<Sphere>(Vector3d(0.0, -100.5, -1.0), 100.0, diffuse));
 
     Ray ray(camera.getPoint(), camera.getPoint(), camera.getPoint());
     Vector3d image_point, color;

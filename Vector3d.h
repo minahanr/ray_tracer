@@ -5,17 +5,17 @@ class Vector3d {
     public:
         Vector3d();
         Vector3d(double x, double y, double z);
-        double getX();
-        double getY();
-        double getZ();
-        double magnitude();
+        double getX() const;
+        double getY() const;
+        double getZ() const;
+        double magnitude() const;
 
-        Vector3d operator+(Vector3d vec);
-        Vector3d operator-(Vector3d vec);
-        double operator*(Vector3d vec);
-        Vector3d operator*(double scalar);
-        bool operator==(Vector3d vec);
-        bool operator!=(Vector3d vec);
+        Vector3d operator+(Vector3d vec) const;
+        Vector3d operator-(Vector3d vec) const;
+        double operator*(Vector3d vec) const;
+        Vector3d operator*(double scalar) const;
+        bool operator==(Vector3d vec) const;
+        bool operator!=(Vector3d vec) const;
         
     protected:
         double x;

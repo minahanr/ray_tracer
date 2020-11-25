@@ -9,14 +9,15 @@
 class Sphere: public Hittable {
     public:
         Sphere(Vector3d center, double radius, Material material);
-        Vector3d getCenter();
-        double getRadius();
-        Material getMaterial();
+        Vector3d getCenter() const;
+        double getRadius() const;
+        virtual void printData() const override;
+        virtual double intersects(Ray& ray) const override;
+        virtual Vector3d calculateNormal(Vector3d intersectionPoint) const override;
 
     private:
         Vector3d center;
         double radius;
-        Material material;
 };
 
 #endif

@@ -5,7 +5,7 @@ class Material {
     public:
         Material();
         Material(int type);
-        int getType();
+        int getType() const;
     private:
         int type;
 };
