@@ -3,13 +3,15 @@
 #include "Ray.h"
 #include "global_constants.h"
 #include "Sphere.h"
+#include "Material.h"
 
 #include <cmath>
 #include<iostream>
 
-Sphere::Sphere(Vector3d center, double radius) {
+Sphere::Sphere(Vector3d center, double radius, Material material) {
     this->center = center;
     this->radius = radius;
+    this->material = material;
 }
 
 Vector3d Sphere::getCenter() {
@@ -18,4 +20,8 @@ Vector3d Sphere::getCenter() {
 
 double Sphere::getRadius() {
     return this->radius;
+}
+
+Material Sphere::getMaterial() {
+    return this->material;
 }

@@ -5,6 +5,7 @@
 #include "Image.h"
 #include "Vector3d.h"
 #include "Unit_vector.h"
+#include "Material.h"
 #include "global_constants.h"
 
 #include<iostream>
@@ -78,23 +79,36 @@ Vector3d intersects(Ray ray, std::vector<Sphere> surface_list, int depth) {
         t = 0.5 * (ray.getDirection().getY() + 1.0);
         return Vector3d(1, 1, 1) * (1.0 - t) + Vector3d(0.5, 0.7, 1.0) * t;
     } else {
-        intersectionPoint = ray.getOrigin() + ray.getDirection() * min_time;
-        Vector3d normal = Unit_vector(intersectionPoint - earliest_surface_hit->getCenter());
-        Vector3d target = intersectionPoint + normal + randInUnitSphere();
-        Ray newRay = Ray(intersectionPoint, Unit_vector(target - intersectionPoint), ray.getImage_point());
-        return intersects(newRay, surface_list, depth - 1) * 0.5;
+        if (earliest_surface_hit->getMaterial().getType() == 0) {
+            intersectionPoint = ray.getOrigin() + ray.getDirection() * min_time;
+            Vector3d normal = Unit_vector(intersectionPoint - earliest_surface_hit->getCenter());
+            Vector3d target = intersectionPoint + normal + randInUnitSphere();
+            Ray newRay = Ray(intersectionPoint, Unit_vector(target - intersectionPoint), ray.getImage_point());
+            return intersects(newRay, surface_list, depth - 1) * 0.5;
+        } else if (earliest_surface_hit->getMaterial().getType() == 1) {
+            intersectionPoint = ray.getOrigin() + ray.getDirection() * min_time;
+            Vector3d normal = Unit_vector(intersectionPoint - earliest_surface_hit->getCenter());
+            Ray newRay = Ray(intersectionPoint, Unit_vector(ray.getDirection() + normal * 2), ray.getImage_point());
+            return intersects(newRay, surface_list, depth - 1);
+        }
     }
 }
 
 int main() {
+    
+    
     Camera camera(Vector3d(0, 0, -10));
     Image image(Vector3d(-2, -2, -1), Unit_vector(1, 0, 0), Unit_vector(0, 1, 0), 400, 400, 0.01, 0.01);
-    std::vector<Sphere> surface_list;
     std::cout << "P3\n" << image.getWidth() << ' ' << image.getHeight() << "\n255\n";
-    surface_list.push_back(Sphere(Vector3d(0.0, 0.0, -2.0), 0.5));
-    surface_list.push_back(Sphere(Vector3d(-1.0, 0.0, -1.0), 0.5));
-    surface_list.push_back(Sphere(Vector3d(1.0, 0.0, -1.0), 0.5));
-    surface_list.push_back(Sphere(Vector3d(0.0, -100.5, -1.0), 100.0));
+
+    Material diffuse(0);
+    Material metal(1);
+
+    std::vector<Sphere> surface_list;
+    surface_list.push_back(Sphere(Vector3d(0.0, 0.0, -1.0), 0.5, diffuse));
+    surface_list.push_back(Sphere(Vector3d(-1.0, 0.0, -1.0), 0.5, metal));
+    surface_list.push_back(Sphere(Vector3d(1.0, 0.0, -1.0), 0.5, metal));
+    surface_list.push_back(Sphere(Vector3d(0.0, -100.5, -1.0), 100.0, diffuse));
 
     Ray ray(camera.getPoint(), camera.getPoint(), camera.getPoint());
     Vector3d image_point, color;
