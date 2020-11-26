@@ -26,7 +26,7 @@ double Vector3d::getZ() const {
 }
 
 double Vector3d::magnitude() const {
-    return std::pow((*this) * (*this), 0.5);
+    return std::pow((*this).dot((*this)), 0.5);
 }
 
 Vector3d Vector3d::operator+(Vector3d vec) const {
@@ -36,9 +36,15 @@ Vector3d Vector3d::operator+(Vector3d vec) const {
 Vector3d Vector3d::operator-(Vector3d vec) const {
     return this->operator+(vec * -1);
 }
-double Vector3d::operator*(Vector3d vec) const {
+
+double Vector3d::dot(Vector3d vec) const {
     return this->getX() * vec.getX() + this->getY() * vec.getY() + this->getZ() * vec.getZ();
 }
+
+Vector3d Vector3d::operator*(Vector3d vec) const {
+    return Vector3d(this->getX() * vec.getX(), this->getY() * vec.getY(), this->getZ() * vec.getZ());
+}
+
 Vector3d Vector3d::operator*(double scalar) const {
     return Vector3d(this->getX() * scalar, this->getY() * scalar, this->getZ() * scalar);
 }

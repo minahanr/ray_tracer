@@ -6,11 +6,11 @@ Hittable::Hittable() {
 
 }
 
-Hittable::Hittable(Material material) {
+Hittable::Hittable(std::shared_ptr<Material> material) {
     this->m_material = material;
 }
 
-Material Hittable::getMaterial() const {
+std::shared_ptr<Material> Hittable::getMaterial() {
     return this->m_material;
 }
 

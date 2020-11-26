@@ -10,9 +10,10 @@ class Vector3d {
         double getZ() const;
         double magnitude() const;
 
+        double dot(Vector3d vec) const;
         Vector3d operator+(Vector3d vec) const;
         Vector3d operator-(Vector3d vec) const;
-        double operator*(Vector3d vec) const;
+        Vector3d operator*(Vector3d vec) const;
         Vector3d operator*(double scalar) const;
         bool operator==(Vector3d vec) const;
         bool operator!=(Vector3d vec) const;

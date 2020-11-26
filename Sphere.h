@@ -6,14 +6,16 @@
 #include "Ray.h"
 #include "Material.h"
 
+#include<memory>
+
 class Sphere: public Hittable {
     public:
-        Sphere(Vector3d center, double radius, Material material);
+        Sphere(Vector3d center, double radius, std::shared_ptr<Material> material);
         Vector3d getCenter() const;
         double getRadius() const;
         virtual void printData() const override;
         virtual double intersects(Ray& ray) const override;
-        virtual Vector3d calculateNormal(Vector3d intersectionPoint) const override;
+        virtual Vector3d calculateNormal(Vector3d intersectionPoint) const;
 
     private:
         Vector3d center;

@@ -1,13 +1,10 @@
 #include "Material.h"
+#include "Vector3d.h"
 
-Material::Material() {
-    this->type = 0;
+Material::Material(Vector3d color) {
+    this->color = color;
 }
 
-Material::Material(int type) {
-    this->type = type;
-}
-
-int Material::getType() const {
-    return this->type;
+Vector3d Material::getColor() const {
+    return this->color;
 }

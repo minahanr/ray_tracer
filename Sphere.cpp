@@ -8,9 +8,9 @@
 
 #include <cmath>
 #include<iostream>
+#include<memory>
 
-Sphere::Sphere(Vector3d center, double radius, Material material) : Hittable(material) {
-    material.getType();
+Sphere::Sphere(Vector3d center, double radius, std::shared_ptr<Material> material) : Hittable(material) {
     this->center = center;
     this->radius = radius;
 }
@@ -30,9 +30,9 @@ void Sphere::printData() const {
 double Sphere::intersects(Ray& ray) const {
     double time;
     Vector3d oc = ray.getOrigin() - this->getCenter();
-    double a = ray.getDirection() * ray.getDirection();
-    double b = ray.getDirection() * oc * 2;
-    double c = oc * oc - this->getRadius() * this->getRadius();
+    double a = ray.getDirection().dot(ray.getDirection());
+    double b = ray.getDirection().dot(oc) * 2;
+    double c = oc.dot(oc) - this->getRadius() * this->getRadius();
 
     double discriminant = b * b - 4 * a * c;
 
