@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-//unit vector not working
 Unit_vector::Unit_vector() {
     this->x = 1;
     this->y = 0;

@@ -17,5 +17,5 @@ Metal::Metal(Vector3d color) : Material(color) {
 Ray Metal::scatter(Ray& ray, std::shared_ptr<Hittable> hittable, double min_time) const {
     Vector3d intersectionPoint = ray.getOrigin() + ray.getDirection() * min_time;
     Vector3d normal = hittable->calculateNormal(intersectionPoint);
-    return Ray(intersectionPoint, Unit_vector(ray.getDirection() + normal * 2), ray.getImage_point());
+    return Ray(intersectionPoint, Unit_vector(ray.getDirection() + normal * 2), ray.getImage_point(), hittable, ray.getSnellIndex());
 }

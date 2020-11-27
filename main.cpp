@@ -8,6 +8,7 @@
 #include "Material.h"
 #include "Lambertian.h"
 #include "Metal.h"
+#include "Dielectric.h"
 #include "global_constants.h"
 
 #include<iostream>
@@ -29,9 +30,9 @@ inline double clamp(double num, double min, double max) {
 
 void print_color(Vector3d color) {
     double scale = 1.0 / SAMPLES_PER_PIXEL;
-    double r = sqrt(color.getX() * scale);
-    double g = sqrt(color.getY() * scale);
-    double b = sqrt(color.getZ() * scale);
+    double r = color.getX() * scale;
+    double g = color.getY() * scale;
+    double b = color.getZ() * scale;
     int ir = static_cast<int>(256 * clamp(r, 0.0, 0.999));
     int ig = static_cast<int>(256 * clamp(g, 0.0, 0.999));
     int ib = static_cast<int>(256 * clamp(b, 0.0, 0.999));
@@ -53,7 +54,7 @@ Vector3d intersects(Ray ray, std::vector<std::shared_ptr<Hittable>> surface_list
         
         time = (*surface_it)->intersects(ray);
         
-        if ((min_time == -1 || time < min_time) && time > 0) {
+        if ((min_time == -1 || time < min_time) && (time > 0 || (time == 0 && *surface_it != ray.getPrevHittable()))) {
             min_time = time;
             earliest_surface_hit = surface_it;
         }
@@ -70,20 +71,22 @@ Vector3d intersects(Ray ray, std::vector<std::shared_ptr<Hittable>> surface_list
 
 int main() {
      
-    Camera camera(Vector3d(0, 0, -10));
+    Camera camera(Vector3d(0, 2, -10));
     Image image(Vector3d(-2, -2, -1), Unit_vector(1, 0, 0), Unit_vector(0, 1, 0), 400, 400, 0.01, 0.01);
     std::cout << "P3\n" << image.getWidth() << ' ' << image.getHeight() << "\n255\n";
 
+    std::shared_ptr<Dielectric> dielectric = std::make_shared<Dielectric>();
     std::shared_ptr<Lambertian> lambertian = std::make_shared<Lambertian>();
-    std::shared_ptr<Metal> metal = std::make_shared<Metal>();
+    std::shared_ptr<Lambertian> red_lambertian = std::make_shared<Lambertian>(Vector3d(1, 0, 0));
+    std::shared_ptr<Metal> metal = std::make_shared<Metal>(Vector3d(1, 0, 0));
 
     std::vector<std::shared_ptr<Hittable>> surface_list;
-    surface_list.push_back(std::make_shared<Sphere> (Vector3d(0.0, 0.0, -1.0), 0.5, lambertian));
-    surface_list.push_back(std::make_shared<Sphere> (Vector3d(-1.0, 0.0, -1.0), 0.5, metal));
-    surface_list.push_back(std::make_shared<Sphere> (Vector3d(1.0, 0.0, -1.0), 0.5, metal));
+    surface_list.push_back(std::make_shared<Sphere> (Vector3d(0.0, 0.0, -1.0), 0.5, metal));
+    surface_list.push_back(std::make_shared<Sphere> (Vector3d(-1.0, 0.0, -1.0), 0.5, lambertian));
+    surface_list.push_back(std::make_shared<Sphere> (Vector3d(1.0, 0.0, -1.0), 0.5, dielectric));
     surface_list.push_back(std::make_shared<Sphere> (Vector3d(0.0, -100.5, -1.0), 100.0, lambertian));
 
-    Ray ray(camera.getPoint(), camera.getPoint(), camera.getPoint());
+    Ray ray(camera.getPoint(), camera.getPoint(), camera.getPoint(), nullptr, DEFAULT_ETA);
     Vector3d image_point, color;
     bool skip = true;
     double i_rand, j_rand;
@@ -96,7 +99,7 @@ int main() {
                 i_rand = i + rand() / (RAND_MAX + 1.0);
                 j_rand = j + rand() / (RAND_MAX + 1.0);
                 image_point = image.getCorner() + image.getVectorDirections()[0] * j_rand * image.getHorizontalRes() + image.getVectorDirections()[1] * i_rand * image.getVerticalRes();
-                ray = Ray(camera.getPoint(), Unit_vector(image_point - camera.getPoint()), image_point);
+                ray = Ray(camera.getPoint(), Unit_vector(image_point - camera.getPoint()), image_point, nullptr, DEFAULT_ETA);
                 color = color + intersects(ray, surface_list, 50);
             }
             print_color(color);

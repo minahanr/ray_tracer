@@ -7,6 +7,7 @@
 #include<memory>
 
 class Hittable;
+class Ray;
 
 class Material {
     public:
