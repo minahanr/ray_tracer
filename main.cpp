@@ -73,18 +73,23 @@ int main() {
      
     Camera camera(Vector3d(0, 2, -10));
     Image image(Vector3d(-2, -2, -1), Unit_vector(1, 0, 0), Unit_vector(0, 1, 0), 400, 400, 0.01, 0.01);
-    std::cout << "P3\n" << image.getWidth() << ' ' << image.getHeight() << "\n255\n";
+    
 
     std::shared_ptr<Dielectric> dielectric = std::make_shared<Dielectric>();
+    std::shared_ptr<Lambertian> ground = std::make_shared<Lambertian>(Vector3d(0.7, 0.7, 0.7));
     std::shared_ptr<Lambertian> lambertian = std::make_shared<Lambertian>();
     std::shared_ptr<Lambertian> red_lambertian = std::make_shared<Lambertian>(Vector3d(1, 0, 0));
     std::shared_ptr<Metal> metal = std::make_shared<Metal>(Vector3d(1, 0, 0));
 
     std::vector<std::shared_ptr<Hittable>> surface_list;
+    surface_list.push_back(std::make_shared<Sphere> (Vector3d(0.0, -100.5, -1.0), 100.0, ground));
+
     surface_list.push_back(std::make_shared<Sphere> (Vector3d(0.0, 0.0, -1.0), 0.5, metal));
     surface_list.push_back(std::make_shared<Sphere> (Vector3d(-1.0, 0.0, -1.0), 0.5, lambertian));
     surface_list.push_back(std::make_shared<Sphere> (Vector3d(1.0, 0.0, -1.0), 0.5, dielectric));
-    surface_list.push_back(std::make_shared<Sphere> (Vector3d(0.0, -100.5, -1.0), 100.0, lambertian));
+    
+
+    std::cout << "P3\n" << image.getWidth() << ' ' << image.getHeight() << "\n255\n";
 
     Ray ray(camera.getPoint(), camera.getPoint(), camera.getPoint(), nullptr, DEFAULT_ETA);
     Vector3d image_point, color;

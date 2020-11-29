@@ -10,6 +10,10 @@ Dielectric::Dielectric() : Material(Vector3d(1, 1, 1)) {
     this->snellIndex = 1.7;
 }
 
+Dielectric::Dielectric(double snellIndex) : Material(Vector3d(1, 1, 1)) {
+    this->snellIndex = 1;
+}
+
 double Dielectric::getSnellIndex() const {
     return this->snellIndex;
 }
